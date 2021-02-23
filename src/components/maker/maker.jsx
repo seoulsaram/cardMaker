@@ -72,7 +72,6 @@ const Maker = ({ FileInput, authService }) => {
       //updated에서 첫번째 {id:1, name:ellie} 오브젝트가 찾아진다.
       //card.id == 12 라면 12번째를 찾게 되겠지 근데 없으면
       //key=12 인 새로운걸 만든다. 그래서 card.id와 updated(or cards)의 key값이 동일해야 하는 것
-      console.log("id:::::", updated[card.id]);
       return updated;
     });
     //setState함수는 위와 같이 콜백을 함수를 쓸 수 있는데

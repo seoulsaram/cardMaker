@@ -1,9 +1,9 @@
-import React, { useRef } from "react";
+import React from "react";
 import Button from "../button/button";
 import styles from "./card_edit_form.module.css";
 
 const CardEditForm = ({ FileInput, card, updateCard, deleteCard }) => {
-  const { name, company, title, email, message, theme, fileName, fileURL } = card;
+  const { name, company, title, email, message, theme, fileName } = card;
 
   const onFileChange = (file) => {
     updateCard({
@@ -27,7 +27,6 @@ const CardEditForm = ({ FileInput, card, updateCard, deleteCard }) => {
     });
   };
   const onSubmit = (event) => {
-    console.log(card);
     deleteCard(card);
     //<CardEditForm key={key} card={cards[key]} updateCard={updateCard} deleteCard={deleteCard} />
     //상위 컴포넌트에서 만들어지는 card마다 key를 전달하고 있기 때문에
