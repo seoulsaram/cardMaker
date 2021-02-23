@@ -6,7 +6,7 @@ import Header from "../header/header";
 import Preview from "../preview/preview";
 import styles from "./maker.module.css";
 
-const Maker = ({ authService }) => {
+const Maker = ({ FileInput, authService }) => {
   const history = useHistory();
   const [cards, setCards] = useState({
     //key는 카드의 id이고, 이 자체가 card의 오브젝트가 된다. (현재 cards는 배열이 아닌 오브젝트 형태)
@@ -18,7 +18,7 @@ const Maker = ({ authService }) => {
       title: "software engineer",
       email: "kaste3@naver.com",
       message: "go for it",
-      filenam: "ellie",
+      fileName: "ellie",
       fileURL: null,
     },
     2: {
@@ -29,7 +29,7 @@ const Maker = ({ authService }) => {
       title: "software engineer",
       email: "kaste3@naver.com",
       message: "go for it",
-      filenam: "ellie",
+      fileName: "ellie",
       fileURL: null,
     },
     3: {
@@ -40,7 +40,7 @@ const Maker = ({ authService }) => {
       title: "software engineer",
       email: "kaste3@naver.com",
       message: "go for it",
-      filenam: "ellie",
+      fileName: "ellie",
       fileURL: null,
     },
   });
@@ -97,6 +97,7 @@ const Maker = ({ authService }) => {
           addCard={CreateOrUpdateCard}
           updateCard={CreateOrUpdateCard}
           deleteCard={deleteCard}
+          FileInput={FileInput}
         />
         <Preview cards={cards} />
       </div>

@@ -4,7 +4,7 @@ import Login from "./components/login/login";
 import Maker from "./components/maker/maker";
 //로그인 후 홈화면으로 가기 (해더, 푸터, 가운데 빈 화면)
 //파이어베이스에서 로그아웃 하는 법 찾아서 구현하기
-function App({ authService, onLogout }) {
+function App({ FileInput, authService }) {
   return (
     <div className={styles.app}>
       <BrowserRouter>
@@ -13,7 +13,7 @@ function App({ authService, onLogout }) {
             <Login authService={authService} />
           </Route>
           <Route path="/maker">
-            <Maker authService={authService} />
+            <Maker FileInput={FileInput} authService={authService} />
           </Route>
         </Switch>
       </BrowserRouter>
