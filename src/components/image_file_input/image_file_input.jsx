@@ -19,7 +19,6 @@ const ImageFileInput = ({ imageUploader, name, onFileChange }) => {
     const uploaded = await imageUploader.upload(event.target.files[0]);
     //이미지가 받아와 진 후 로딩 없애기
     setLoading(false);
-    console.log(uploaded);
     onFileChange({
       name: uploaded.original_filename,
       url: uploaded.url,

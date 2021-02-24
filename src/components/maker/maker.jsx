@@ -35,7 +35,7 @@ const Maker = ({ FileInput, authService, cardRepository }) => {
     });
     return () => stopSync();
     //useEffect메서드의 return은 컴포넌트가 unmount될 때 자동으로 호출된다.
-  }, [userId]);
+  }, [userId, cardRepository]);
 
   //login용
   useEffect(() => {
@@ -46,7 +46,7 @@ const Maker = ({ FileInput, authService, cardRepository }) => {
         history.push("/");
       }
     });
-  });
+  }, [authService, userId, history]);
 
   const CreateOrUpdateCard = (card) => {
     // const updated = { ...cards };
