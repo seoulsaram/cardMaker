@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import Editor from "../editor/editor";
 import Footer from "../footer/footer";
@@ -19,9 +19,13 @@ const Maker = ({ FileInput, authService, cardRepository }) => {
   //그래서 userId의 초기값에 historystate가 있다면 그 id를 사용한다고 써준것
   const [cards, setCards] = useState({});
 
-  const onLogout = () => {
+  const onLogout = useCallback(() => {
     authService.logout();
-  };
+  }, [authService]);
+  //useCallback : 함수가 계속 호출되어도 동일한 데이터를 쓰려면 이것을 사용
+  //useCallback을 사용한 함수는 props나 state가 변경되어도, 한 번 만들어진 함수를 계속 그대로 재사용한다는 것을 의미한다
+  //때문에 어떤 프롭이 변경되었을 때 새로운 콜백을 만들어야 한다면, 그 프롭을 useCallback의 인자로 전달해주면
+  //그 프롭이 변경되었을 때는 함수를 재사용하지 않고 다시 만든다
 
   //마운트 되었을 때와 사용자 id가 변경될 때마다 사용할 것
   useEffect(() => {

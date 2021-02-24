@@ -1,9 +1,9 @@
-import React from "react";
+import React, { memo } from "react";
 import styles from "./card.module.css";
 
 const DEFAULT_IMAGE = "/images/default_logo.png";
-const Card = ({ card }) => {
-  const { name, company, title, email, message, theme, fileName, fileURL } = card;
+const Card = memo(({ card }) => {
+  const { name, company, title, email, message, theme, fileURL } = card;
   //card안에 있는 key를 변수로 선언하고 card를 넣어주면 각각 이름에 맞는 값들이 알아서 들어간다.
   const url = fileURL || DEFAULT_IMAGE;
   //fileURL이 없다면 DEFAULT_IMAGE를 사용한다.
@@ -20,7 +20,7 @@ const Card = ({ card }) => {
       </div>
     </li>
   );
-};
+});
 
 function getStyles(theme) {
   switch (theme) {

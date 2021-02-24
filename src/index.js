@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import ReactDOM from "react-dom";
 import "./index.module.css";
 import App from "./app.jsx";
@@ -10,7 +10,7 @@ import CardRepository from "./service/card_repository";
 const authService = new AuthService();
 const cardRepository = new CardRepository();
 const imageUploader = new ImageUploader();
-const FileInput = (props) => <ImageFileInput {...props} imageUploader={imageUploader} />;
+const FileInput = memo((props) => <ImageFileInput {...props} imageUploader={imageUploader} />);
 
 //ImageFileInput 컴포넌트를 index.js에서 만들어 FileInput에 넣은 뒤 하위 컴포넌트로 전달하고 있는 이유는
 //ImageFileInput은 하하하하위 컴포넌트로, 이 컴포넌트를 사용하기 위해서
