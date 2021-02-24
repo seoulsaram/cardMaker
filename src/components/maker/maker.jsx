@@ -6,52 +6,43 @@ import Header from "../header/header";
 import Preview from "../preview/preview";
 import styles from "./maker.module.css";
 
-const Maker = ({ FileInput, authService }) => {
+const Maker = ({ FileInput, authService, cardRepository }) => {
   const history = useHistory();
-  const [cards, setCards] = useState({
-    //key는 카드의 id이고, 이 자체가 card의 오브젝트가 된다. (현재 cards는 배열이 아닌 오브젝트 형태)
-    1: {
-      id: "1",
-      name: "ellie",
-      company: "samsung",
-      theme: "light",
-      title: "software engineer",
-      email: "kaste3@naver.com",
-      message: "go for it",
-      fileName: "ellie",
-      fileURL: null,
-    },
-    2: {
-      id: "2",
-      name: "ellie",
-      company: "samsung",
-      theme: "light",
-      title: "software engineer",
-      email: "kaste3@naver.com",
-      message: "go for it",
-      fileName: "ellie",
-      fileURL: null,
-    },
-    3: {
-      id: "3",
-      name: "ellie",
-      company: "samsung",
-      theme: "colorful",
-      title: "software engineer",
-      email: "kaste3@naver.com",
-      message: "go for it",
-      fileName: "ellie",
-      fileURL: null,
-    },
-  });
+  const historyState = history?.location?.state;
+  const [userId, setUserId] = useState(historyState && historyState.id);
+  //사용자의 id별로 카드가 저장될 수 있게 만들어야 함
+  //사용자의 id는 로그인을 할 때 히스토리에 함께 전달하는데, 전달된 히스토리 안에 있는 id를
+  //maker컴포넌트 안에서 state로 저장할거다.
+  //userId의 초기값은 useHistory안의 state를 먼저 받아올건데,
+  //history state는 로그인과 같은 컴포넌트를 통해 왔다면값이 있을 것이고
+  //아니라면 값이 없을 수도 있다.
+  //그래서 userId의 초기값에 historystate가 있다면 그 id를 사용한다고 써준것
+  const [cards, setCards] = useState({});
 
   const onLogout = () => {
     authService.logout();
   };
 
+  //마운트 되었을 때와 사용자 id가 변경될 때마다 사용할 것
+  useEffect(() => {
+    if (!userId) {
+      return;
+    }
+    const stopSync = cardRepository.syncCards(userId, (cards) => {
+      setCards(cards);
+      //cardRepository의 syncCards메서드는 return으로 ref.off를 하고 있으므로
+      //변수 stopSync에는 이 return된 ref.off가 담긴다
+    });
+    return () => stopSync();
+    //useEffect메서드의 return은 컴포넌트가 unmount될 때 자동으로 호출된다.
+  }, [userId]);
+
+  //login용
   useEffect(() => {
     authService.onAuthChange((user) => {
-      if (!user) {
+      if (user) {
+        setUserId(user.uid);
+      } else {
         history.push("/");
       }
     });
@@ -73,10 +64,11 @@ const Maker = ({ FileInput, authService }) => {
       //card.id == 12 라면 12번째를 찾게 되겠지 근데 없으면
       //key=12 인 새로운걸 만든다. 그래서 card.id와 updated(or cards)의 key값이 동일해야 하는 것
       return updated;
+      //setState함수는 위와 같이 콜백을 함수를 쓸 수 있는데
+      //위와 같은 경우는 setCards가 실행되는 그 순간의 state를 불러와서
+      //새로운 값을 리턴하도록 만드는 것
     });
-    //setState함수는 위와 같이 콜백을 함수를 쓸 수 있는데
-    //위와 같은 경우는 setCards가 실행되는 그 순간의 state를 불러와서
-    //새로운 값을 리턴하도록 만드는 것
+    cardRepository.saveCard(userId, card);
   };
 
   const deleteCard = (card) => {
@@ -85,6 +77,7 @@ const Maker = ({ FileInput, authService }) => {
       delete updated[card.id];
       return updated;
     });
+    cardRepository.removeCard(userId, card);
   };
 
   return (
